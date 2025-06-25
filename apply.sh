@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 
 # Apply custom Neovim configuration modifications after fresh pull
 # This script only modifies existing files, not creating new ones
@@ -6,7 +6,27 @@
 
 set -e  # Exit on any error
 
+# Check if we're in the correct directory (Neovim config root)
+if [[ ! -f "init.lua" ]] || [[ ! -d "lua" ]]; then
+    echo "❌ Error: This script must be run from the Neovim configuration root directory"
+    echo "   Expected files: init.lua and lua/ directory"
+    echo "   Current directory: $(pwd)"
+    echo "   Please navigate to your Neovim config directory first"
+    exit 1
+fi
+
+# Check if required files exist
+required_files=("lua/keymaps.lua" "lua/lazy-plugins.lua" "lua/options.lua")
+for file in "${required_files[@]}"; do
+    if [[ ! -f "$file" ]]; then
+        echo "❌ Error: Required file not found: $file"
+        echo "   Make sure you're in the correct Neovim configuration directory"
+        exit 1
+    fi
+done
+
 echo "🚀 Applying custom Neovim configuration modifications..."
+echo "📁 Working directory: $(pwd)"
 
 # 1. Modify lua/keymaps.lua - Add custom keymap require
 echo "🔧 Modifying lua/keymaps.lua..."
