@@ -35,7 +35,7 @@ local adapters = {
     return require('codecompanion.adapters').extend('copilot', {
       schema = {
         model = {
-          default = 'claude-3.5-sonnet', -- High-quality model for best results
+          default = 'claude-sonnet-4-20250514', -- High-quality model for best results
         },
       },
     })
@@ -47,9 +47,9 @@ local adapters = {
 -- ============================================================================
 -- Global settings that affect plugin behavior
 local opts = {
-  log_level = 'ERROR',            -- Only show error messages (INFO, WARN, ERROR, DEBUG)
-  send_code = true,               -- Allow sending code context to AI
-  silence_notifications = false,  -- Show notifications for operations
+  log_level = 'ERROR', -- Only show error messages (INFO, WARN, ERROR, DEBUG)
+  send_code = true, -- Allow sending code context to AI
+  silence_notifications = false, -- Show notifications for operations
 }
 
 -- ============================================================================
@@ -59,56 +59,56 @@ local opts = {
 
 -- Action Palette Settings (command menu)
 local action_palette = {
-  width = 95,   -- Width of the action palette window
-  height = 10,  -- Height of the action palette window
+  width = 95, -- Width of the action palette window
+  height = 10, -- Height of the action palette window
 }
 
 -- Chat Window Configuration
 local chat_window = {
   -- Window layout and positioning
-  layout = 'vertical',    -- Options: 'float', 'vertical', 'horizontal', 'buffer'
-  border = 'single',      -- Border style: 'single', 'double', 'rounded', 'none'
-  height = 0.8,          -- 80% of editor height
-  width = 0.45,          -- 45% of editor width
-  relative = 'editor',    -- Position relative to editor
+  layout = 'vertical', -- Options: 'float', 'vertical', 'horizontal', 'buffer'
+  border = 'single', -- Border style: 'single', 'double', 'rounded', 'none'
+  height = 0.8, -- 80% of editor height
+  width = 0.45, -- 45% of editor width
+  relative = 'editor', -- Position relative to editor
 
   -- Window-specific options for better text display
   opts = {
-    breakindent = true,      -- Maintain indentation on wrapped lines
-    cursorcolumn = false,    -- Don't highlight cursor column
-    cursorline = false,      -- Don't highlight cursor line
-    foldcolumn = '0',       -- No fold column
-    linebreak = true,       -- Break lines at word boundaries
-    list = false,           -- Don't show whitespace characters
-    signcolumn = 'no',      -- No sign column
-    spell = false,          -- Disable spell checking
-    wrap = true,            -- Enable line wrapping
+    breakindent = true, -- Maintain indentation on wrapped lines
+    cursorcolumn = false, -- Don't highlight cursor column
+    cursorline = false, -- Don't highlight cursor line
+    foldcolumn = '0', -- No fold column
+    linebreak = true, -- Break lines at word boundaries
+    list = false, -- Don't show whitespace characters
+    signcolumn = 'no', -- No sign column
+    spell = false, -- Disable spell checking
+    wrap = true, -- Enable line wrapping
   },
 }
 
 -- Chat Behavior Settings
 local chat_behavior = {
-  intro_message = 'Welcome to CodeCompanion ✨',  -- Greeting message
-  separator = '─',                                -- Message separator character
-  show_token_count = true,                       -- Display token usage
-  show_header_separator = true,                  -- Show header dividers
-  start_in_insert_mode = false,                  -- Start in normal mode
-  use_default_actions = true,                    -- Enable default actions
-  use_default_tools = true,                      -- Enable default tools
+  intro_message = 'Welcome to CodeCompanion ✨', -- Greeting message
+  separator = '─', -- Message separator character
+  show_token_count = true, -- Display token usage
+  show_header_separator = true, -- Show header dividers
+  start_in_insert_mode = false, -- Start in normal mode
+  use_default_actions = true, -- Enable default actions
+  use_default_tools = true, -- Enable default tools
 }
 
 -- Diff View Configuration
 local diff_display = {
-  layout = 'vertical',    -- Options: 'vertical', 'horizontal'
+  layout = 'vertical', -- Options: 'vertical', 'horizontal'
   opts = {
-    wrap = false,         -- Don't wrap long lines in diff view
+    wrap = false, -- Don't wrap long lines in diff view
   },
-  provider = 'default',   -- Options: 'default', 'mini_diff'
+  provider = 'default', -- Options: 'default', 'mini_diff'
 }
 
 -- Inline Assistant Configuration
 local inline_display = {
-  layout = 'vertical',    -- How to display new buffers: 'vertical', 'horizontal', 'buffer'
+  layout = 'vertical', -- How to display new buffers: 'vertical', 'horizontal', 'buffer'
 }
 
 -- ============================================================================
@@ -122,7 +122,7 @@ local prompt_library = {
     strategy = 'inline',
     description = 'Create a custom prompt',
     opts = {
-      placement = 'cursor',  -- Place result at cursor position
+      placement = 'cursor', -- Place result at cursor position
     },
     prompts = {
       {
@@ -139,11 +139,11 @@ local prompt_library = {
     strategy = 'chat',
     description = 'Explain how the selected code works',
     opts = {
-      modes = { 'v' },                    -- Only available in visual mode
-      short_name = 'explain',             -- Short name for quick access
-      auto_submit = true,                 -- Submit automatically
-      user_prompt = false,                -- Don't prompt user for input
-      stop_context_insertion = true,      -- Don't add extra context
+      modes = { 'v' }, -- Only available in visual mode
+      short_name = 'explain', -- Short name for quick access
+      auto_submit = true, -- Submit automatically
+      user_prompt = false, -- Don't prompt user for input
+      stop_context_insertion = true, -- Don't add extra context
     },
     prompts = {
       {
@@ -153,11 +153,7 @@ local prompt_library = {
       {
         role = 'user',
         content = function(context)
-          return 'Please explain how this code works:\n\n```'
-            .. context.filetype
-            .. '\n'
-            .. context.selection
-            .. '\n```'
+          return 'Please explain how this code works:\n\n```' .. context.filetype .. '\n' .. context.selection .. '\n```'
         end,
       },
     },
@@ -289,9 +285,9 @@ local prompt_library = {
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect', 'preview' }
 
 -- Enhanced diff options for better code comparison
-vim.opt.diffopt:append('linematch:60')
-vim.opt.diffopt:append('algorithm:patience')
-vim.opt.diffopt:append('indent-heuristic')
+vim.opt.diffopt:append 'linematch:60'
+vim.opt.diffopt:append 'algorithm:patience'
+vim.opt.diffopt:append 'indent-heuristic'
 
 -- ============================================================================
 -- 7. AUTOCOMMANDS FOR CODECOMPANION BUFFERS
@@ -313,14 +309,14 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.textwidth = 80
     vim.opt_local.conceallevel = 2
     vim.opt_local.concealcursor = 'nc'
-    
+
     -- Clean interface for chat
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
     vim.opt_local.signcolumn = 'no'
     vim.opt_local.foldcolumn = '0'
     vim.opt_local.colorcolumn = ''
-    
+
     -- Better visual feedback
     vim.opt_local.cursorline = true
     vim.opt_local.cursorcolumn = false
@@ -333,10 +329,10 @@ vim.api.nvim_create_autocmd('FileType', {
 -- Global vim variables for CodeCompanion customization
 
 vim.g.codecompanion = {
-  disable_default_keymaps = false,  -- Keep default keymaps alongside custom ones
-  default_adapter = 'copilot',      -- Use GitHub Copilot as primary adapter
-  auto_save_chats = true,           -- Automatically save chat sessions
-  show_progress = true,             -- Show progress notifications
+  disable_default_keymaps = false, -- Keep default keymaps alongside custom ones
+  default_adapter = 'copilot', -- Use GitHub Copilot as primary adapter
+  auto_save_chats = true, -- Automatically save chat sessions
+  show_progress = true, -- Show progress notifications
 }
 
 -- ============================================================================

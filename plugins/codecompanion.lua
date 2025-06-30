@@ -17,6 +17,6 @@ return {
     -- Configuration is loaded from custom/opts/codecompanion.lua
     -- This keeps the plugin file clean and separates concerns
     local codecompanion = require 'codecompanion'
-    codecompanion.setup(require 'custom.opts.codecompanion'.config)
+    codecompanion.setup(require('custom.opts.codecompanion').config)
   end,
 }
