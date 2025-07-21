@@ -33,11 +33,11 @@ local adapters = {
   -- GitHub Copilot adapter configuration
   copilot = function()
     return require('codecompanion.adapters').extend('copilot', {
-      schema = {
-        model = {
-          default = 'claude-sonnet-4-20250514', -- High-quality model for best results
-        },
-      },
+      -- schema = {
+      --   model = {
+      --     default = 'claude-3.5-sonnet', -- High-quality model for best results
+      --   },
+      -- },
     })
   end,
 }
