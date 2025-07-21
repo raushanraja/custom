@@ -1,11 +1,12 @@
 -- custom/keymap/init.lua
 
 -- Load language-specific keymaps
-require 'custom.keymap.codecompanion'
-require 'custom.keymap.copilot'
 require 'custom.keymap.lang'
 require 'custom.keymap.snacks'
 require 'custom.keymap.toggleterm'
+require 'custom.keymap.copilot'
+require 'custom.keymap.codecompanion'
+require 'custom.keymap.buffer'
 
 -- Place your custom keymaps here
 -- Example:
@@ -51,3 +52,12 @@ keymap('i', 'jk', '<Esc>', opts)
 -- Comment Plugin
 keymap('n', '<leader>/', "<ESC><cmd>lua require('Comment.api').toggle.linewise.current()<cr>", opts)
 keymap('v', '<leader>/', "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", opts)
+
+-- Go to next  and previous diagnostic
+keymap('n', '<leader>tn', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+keymap('n', '<leader>tp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+
+-- LSP keymaps
+---- Show action menu
+keymap('n', '<leader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+
