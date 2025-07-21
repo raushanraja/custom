@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  nvim:
+    build: .
+    image: arch-nvim:latest
+    container_name: arch-nvim
+    stdin_open: true
+    tty: true
+    environment:
+      - DISPLAY=${DISPLAY}
+    working_dir: /home/nvimuser
+    user: nvimuser

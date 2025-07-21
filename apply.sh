@@ -33,6 +33,8 @@ echo "🔧 Modifying lua/keymaps.lua..."
 if ! grep -q "require 'custom.keymap'" lua/keymaps.lua; then
     # Add the require line before the final comment
     sed -i '/^-- vim: ts=2 sts=2 sw=2 et$/i require '\''custom.keymap'\''' lua/keymaps.lua
+    sed -i "/^\s*require\s*['\"]kickstart[\/.]plugins[\/.]/ s/^/  -- /" lua/lazy-plugins.lua
+
 fi
 
 # 2. Modify lua/lazy-plugins.lua - Comment out kickstart plugins and enable custom plugins
