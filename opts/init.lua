@@ -1,5 +1,15 @@
-require 'custom.opts.copilot'
-require 'custom.opts.codecompanion'
+-- Options Configuration Entry Point
+-- This file orchestrates the loading of all option configurations
 
-vim.opt.swapfile = false
-vim.opt.relativenumber = true
+local M = {}
+
+-- Load AI tool options
+require 'opts.ai.copilot'
+require 'opts.ai.codecompanion'
+
+-- Additional options can be set here
+-- Example:
+-- vim.opt.spell = true
+-- vim.opt.spelllang = 'en_us'
+
+return M

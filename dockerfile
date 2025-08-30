@@ -1,38 +1,80 @@
 FROM archlinux:latest
 
-# Fix keyring/signature issues and clean cache before installing packages
+# Fix package database and keyring issues
 RUN pacman -Sy --noconfirm archlinux-keyring gnupg \
     && pacman-key --init \
     && pacman-key --populate archlinux \
-    && pacman -Scc --noconfirm \
-    && pacman -Syu --noconfirm \
-    neovim git make unzip gcc ripgrep fd xclip npm go ttf-nerd-fonts-symbols-mono lazygit
+    && pacman -Syy --noconfirm \
+    && pacman -Scc --noconfirm
+
+# Install system dependencies with error handling
+RUN pacman -Sy --noconfirm \
+    neovim \
+    git \
+    make \
+    unzip \
+    gcc \
+    ripgrep \
+    fd \
+    xclip \
+    npm \
+    go \
+    lua \
+    python \
+    python-pip \
+    ttf-nerd-fonts-symbols-mono \
+    lazygit \
+    || (echo "Package installation failed, trying alternative approach..." && \
+        pacman -Sy --noconfirm --overwrite="*" \
+        archlinux-keyring \
+        gnupg \
+        neovim \
+        git \
+        make \
+        unzip \
+        gcc \
+        ripgrep \
+        fd \
+        xclip \
+        npm \
+        go \
+        python \
+        python-pip \
+        ttf-nerd-fonts-symbols-mono \
+        lazygit)
+
+# Clean package cache
+RUN pacman -Scc --noconfirm
 
 # Set up user (non-root for everything else)
-RUN useradd -m nvimuser
+RUN useradd -m -s /bin/bash nvimuser \
+    && usermod -aG wheel nvimuser
 
-# Clone kickstart-modular.nvim config as nvimuser
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# Create basic Neovim config structure with lazy
+RUN mkdir -p ~/.config/nvim/lua
+
+# Copy the init.lua file to the correct location
+COPY init.lua /home/nvimuser/.config/nvim/init.lua
+COPY .stylua.toml /home/nvimuser/.config/nvim/.stylua.toml
+
+COPY core /home/nvimuser/.config/nvim/lua/core
+COPY keymap /home/nvimuser/.config/nvim/lua/keymap
+COPY languages /home/nvimuser/.config/nvim/lua/languages
+COPY plugins /home/nvimuser/.config/nvim/lua/plugins
+COPY opts /home/nvimuser/.config/nvim/lua/opts
+
+# Change the ownership of the home directory
+RUN chown -R nvimuser:nvimuser /home/nvimuser
+
+# Switch to user for configuration
 USER nvimuser
 WORKDIR /home/nvimuser
-RUN git clone https://github.com/dam9000/kickstart-modular.nvim ~/.config/nvim
 
-# Remove the default kickstart-modular.nvim config
-RUN rm -rf ~/.config/nvim/lua/custom
 
-# Replace the custom directory with your own custom config
-RUN git clone https://github.com/raushanraja/custom ~/.config/nvim/lua/custom
-RUN cd ~/.config/nvim/lua/custom \
-    && git checkout buffer
+# Set environment
+ENV PATH="/home/nvimuser/.local/bin:$PATH"
 
-# Switch back to root to copy and set permissions for apply.sh
-USER root
-COPY apply.sh /home/nvimuser/.config/nvim/apply.sh
-RUN chown nvimuser:nvimuser /home/nvimuser/.config/nvim/apply.sh \
-    && chmod +x /home/nvimuser/.config/nvim/apply.sh
-
-# Back to nvimuser for running apply.sh and entrypoint
-USER nvimuser
-WORKDIR /home/nvimuser
-RUN cd /home/nvimuser/.config/nvim && ./apply.sh
-
-ENTRYPOINT ["/usr/bin/bash"]
+# Default command
+CMD ["/usr/bin/bash"]

@@ -9,8 +9,8 @@ return {
     event = 'InsertEnter',
     config = function()
       -- Load copilot configuration from external file
-      local copilot_opts = require('custom.opts.copilot')
-      
+      local copilot_opts = require 'opts.ai.copilot'
+
       -- Setup copilot.lua with external configuration
       require('copilot').setup(copilot_opts)
     end,
