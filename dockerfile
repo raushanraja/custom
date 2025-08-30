@@ -52,6 +52,12 @@ RUN useradd -m -s /bin/bash nvimuser \
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
+ENV PYTHONUNBUFFERED=1
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+RUN uv venv /opt/venv
+
 # Create basic Neovim config structure with lazy
 RUN mkdir -p ~/.config/nvim/lua
 
