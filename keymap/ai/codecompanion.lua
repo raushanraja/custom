@@ -40,44 +40,6 @@ map('n', '<leader>ccs', '<cmd>CodeCompanionChat Save<cr>', { desc = 'CodeCompani
 map('n', '<C-c>', '<cmd>CodeCompanionActions<cr>', { desc = 'CodeCompanion: Quick Actions' })
 map('v', '<C-c>', '<cmd>CodeCompanionActions<cr>', { desc = 'CodeCompanion: Quick Actions' })
 
--- Add which-key group descriptions if which-key is available
--- NOTE: Commented out since which-key is not installed
---[[
-local ok, wk = pcall(require, 'which-key')
-if ok then
-  wk.register({
-    ['<leader>cc'] = {
-      name = '[C]ode[C]ompanion',
-      c = 'Toggle Chat',
-      a = 'Add to Chat',
-      i = 'Inline Assistant',
-      e = 'Explain Code',
-      t = 'Generate Tests',
-      o = 'Optimize Code',
-      f = 'Fix Code',
-      m = 'Add Comments',
-      p = 'Custom Prompt',
-      l = 'Load Chat',
-      s = 'Save Chat',
-    },
-  }, { mode = 'n' })
-  
-  wk.register({
-    ['<leader>cc'] = {
-      name = '[C]ode[C]ompanion',
-      c = 'Toggle Chat',
-      i = 'Inline Assistant',
-      e = 'Explain Code',
-      t = 'Generate Tests',
-      o = 'Optimize Code',
-      f = 'Fix Code',
-      m = 'Add Comments',
-      p = 'Custom Prompt',
-    },
-  }, { mode = 'v' })
-end
---]]
-
 -- Additional convenience functions
 -- Function to quickly ask about current buffer
 map('n', '<leader>ccb', function()
@@ -91,3 +53,36 @@ map('n', '<leader>ccr', function()
   local line = vim.api.nvim_get_current_line()
   codecompanion.inline('Explain this line: ' .. line)
 end, { desc = 'CodeCompanion: Review current line' })
+
+local function start_chat_with_selection_or_line()
+  local text_to_send
+
+  -- Check if we are in visual mode by checking for the visual selection marks
+  if vim.fn.mode(1) == 'v' or vim.fn.mode(1) == 'V' then
+    -- Get the start and end line numbers of the visual selection
+    local start_line = vim.fn.line "'<"
+    local end_line = vim.fn.line "'>"
+    -- Read the lines from the buffer
+    local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+    -- Join them with spaces to create a single prompt string
+    text_to_send = table.concat(lines, ' ')
+  else
+    -- Otherwise, we're in normal mode, so just get the current line
+    text_to_send = vim.fn.getline '.'
+  end
+
+  -- Make sure we have text before sending
+  if text_to_send and not text_to_send:match '^%s*$' then
+    -- Use vim.cmd to execute the command with the prepared text
+    vim.cmd('CodeCompanionChat ' .. text_to_send)
+  else
+    vim.notify('No text selected or current line is empty.', vim.log.levels.INFO, { title = 'CodeCompanion' })
+  end
+end
+
+-- Keymap to start chat with selected text or current line
+-- Works in both normal and visual modes
+
+map({ 'n', 'v' }, '<leader>cb', start_chat_with_selection_or_line, {
+  desc = 'CodeCompanion: Chat with selection or line',
+})
