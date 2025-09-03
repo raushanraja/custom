@@ -4,20 +4,21 @@
 
 ```
 ├── init.lua            # Main orchestration file (lazy setup + custom loader)
-├── core/               # Core Neovim settings
-│   ├── options.lua     # Basic options
-│   ├── keymaps.lua     # Core key mappings
-│   └── autocmds.lua    # Automatic commands
-├── plugins/            # Plugin configurations (categorized)
-│   ├── core/           # Essential plugins
-│   ├── ui/             # Interface plugins
-│   ├── dev/            # Development tools
-│   ├── ai/             # AI/ML plugins
-│   └── utils/          # Utility plugins
-│   └── init.lua/       # Main plugin loader
-├── keymap/             # Key mapping configurations
-├── opts/               # Options (categorized)
-├── languages/          # Language-specific settings
+├── lua/                  # Lua configuration root
+│   ├── core/               # Core Neovim settings
+│   │   ├── options.lua     # Basic options
+│   │   ├── keymaps.lua     # Core key mappings
+│   │   └── autocmds.lua    # Automatic commands
+│   ├── plugins/            # Plugin configurations (categorized)
+│   │   ├── core/           # Essential plugins
+│   │   ├── ui/             # Interface plugins
+│   │   ├── dev/            # Development tools
+│   │   ├── ai/             # AI/ML plugins
+│   │   ├── utils/          # Utility plugins
+│   │   └── init.lua        # Main plugin loader
+│   ├── keymap/             # Key mapping configurations
+│   ├── opts/               # Options (categorized)
+│   ├── languages/          # Language-specific settings
 └── dockerfile          # Streamlined Docker setup
 ```
 
