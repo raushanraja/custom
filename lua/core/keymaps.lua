@@ -30,7 +30,7 @@ keymap('n', '<S-h>', ':bprevious<CR>', opts)
 keymap('n', '<leader>bd', ':bdelete<CR>', opts)
 
 -- Clear highlights
-keymap('n', '<leader>h', ':nohlsearch<CR>', opts)
+keymap('n', '<ESC>', ':nohlsearch<CR>', opts)
 
 -- Better search navigation
 keymap('n', 'n', 'nzzzv', opts)
