@@ -31,15 +31,17 @@ local strategies = {
 -- Configure the AI providers and their specific settings
 local adapters = {
   -- GitHub Copilot adapter configuration
-  copilot = function()
-    return require('codecompanion.adapters').extend('copilot', {
-      -- schema = {
-      --   model = {
-      --     default = 'claude-3.5-sonnet', -- High-quality model for best results
-      --   },
-      -- },
-    })
-  end,
+  http = {
+    copilot = function()
+      return require('codecompanion.adapters').extend('copilot', {
+        -- schema = {
+        --   model = {
+        --     default = 'claude-3.5-sonnet', -- High-quality model for best results
+        --   },
+        -- },
+      })
+    end,
+  },
 }
 
 -- ============================================================================

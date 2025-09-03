@@ -4,7 +4,6 @@ local M = {
     'pyright',
     'typescript-language-server',
     'rust-analyzer',
-    'gopls',
     'clangd',
     'prettier',
     'stylua',
