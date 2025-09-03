@@ -10,7 +10,6 @@ local keymap = vim.api.nvim_set_keymap
 -- Leader key mappings
 keymap('n', '<leader>w', ':w<CR>', opts)
 keymap('n', '<leader>q', ':q<CR>', opts)
-keymap('n', '<leader>x', ':x<CR>', opts)
 
 -- Better window navigation
 keymap('n', '<C-h>', '<C-w>h', opts)
