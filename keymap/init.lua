@@ -11,6 +11,7 @@ require 'keymap.dev.toggleterm'
 require 'keymap.ai.copilot'
 require 'keymap.ai.codecompanion'
 require 'keymap.utils.snacks'
+require 'keymap.utils.diagnostics'
 
 -- Load language-specific keymaps
 require 'keymap.lang'
