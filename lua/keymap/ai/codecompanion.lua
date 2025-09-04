@@ -40,6 +40,9 @@ map('n', '<leader>ccs', '<cmd>CodeCompanionChat Save<cr>', { desc = 'CodeCompani
 map('n', '<C-c>', '<cmd>CodeCompanionActions<cr>', { desc = 'CodeCompanion: Quick Actions' })
 map('v', '<C-c>', '<cmd>CodeCompanionActions<cr>', { desc = 'CodeCompanion: Quick Actions' })
 
+-- Generate commit message from git diff
+map('n', '<leader>ccm', '<cmd>CodeCompanion /commit<cr>', { desc = 'CodeCompanion: Generate Commit Message' })
+
 -- Additional convenience functions
 -- Function to quickly ask about current buffer
 map('n', '<leader>ccb', function()
