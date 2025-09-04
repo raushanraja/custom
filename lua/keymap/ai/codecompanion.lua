@@ -73,8 +73,14 @@ local function start_chat_with_selection_or_line()
 
   -- Make sure we have text before sending
   if text_to_send and not text_to_send:match '^%s*$' then
-    -- Use vim.cmd to execute the command with the prepared text
-    vim.cmd('CodeCompanionChat ' .. text_to_send)
+    -- Prompt user for additional input
+    vim.ui.input({ prompt = 'Additional prompt (optional): ' }, function(user_input)
+      if user_input and user_input ~= '' then
+        text_to_send = text_to_send .. ' ' .. user_input
+      end
+      -- Send to CodeCompanionChat
+      vim.cmd('CodeCompanionChat ' .. text_to_send)
+    end)
   else
     vim.notify('No text selected or current line is empty.', vim.log.levels.INFO, { title = 'CodeCompanion' })
   end

@@ -105,7 +105,7 @@ local diff_display = {
   opts = {
     wrap = false, -- Don't wrap long lines in diff view
   },
-  provider = 'default', -- Options: 'default', 'mini_diff'
+  provider = 'inline', -- Options: 'inline', 'split', 'mini_diff'
 }
 
 -- Inline Assistant Configuration
