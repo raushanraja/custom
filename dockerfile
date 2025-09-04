@@ -61,11 +61,7 @@ RUN mkdir -p /root/.config/nvim/lua
 COPY init.lua /root/.config/nvim/init.lua
 COPY .stylua.toml /root/.config/nvim/.stylua.toml
 
-COPY core /root/.config/nvim/lua/core
-COPY keymap /root/.config/nvim/lua/keymap
-COPY languages /root/.config/nvim/lua/languages
-COPY plugins /root/.config/nvim/lua/plugins
-COPY opts /root/.config/nvim/lua/opts
+COPY lua /root/.config/nvim/lua
 
 WORKDIR /workspace
 
