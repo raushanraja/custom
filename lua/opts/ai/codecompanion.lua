@@ -301,6 +301,7 @@ Rules:
 - Scope should be the entity or feature area
 - Should have a short, descriptive title
 - Should include point-form short details
+- All commit messages should be inside a diff code block
 
 #DIFF_START#
 ```diff

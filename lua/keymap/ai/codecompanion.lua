@@ -59,6 +59,7 @@ end, { desc = 'CodeCompanion: Review current line' })
 
 local function start_chat_with_selection_or_line()
   local text_to_send
+  local filepath = vim.api.nvim_buf_get_name(0)
 
   -- Check if we are in visual mode by checking for the visual selection marks
   if vim.fn.mode(1) == 'v' or vim.fn.mode(1) == 'V' then
@@ -67,8 +68,8 @@ local function start_chat_with_selection_or_line()
     local end_line = vim.fn.line "'>"
     -- Read the lines from the buffer
     local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
-    -- Join them with spaces to create a single prompt string
-    text_to_send = table.concat(lines, ' ')
+    -- Join them with newlines to preserve formatting
+    text_to_send = table.concat(lines, '\n')
   else
     -- Otherwise, we're in normal mode, so just get the current line
     text_to_send = vim.fn.getline '.'
@@ -79,10 +80,15 @@ local function start_chat_with_selection_or_line()
     -- Prompt user for additional input
     vim.ui.input({ prompt = 'Additional prompt (optional): ' }, function(user_input)
       if user_input and user_input ~= '' then
-        text_to_send = text_to_send .. ' ' .. user_input
+        local filetype = vim.bo.filetype
+        text_to_send = '```' .. filetype .. '\n' .. text_to_send .. '\n```\n'
+        text_to_send = text_to_send .. '@{insert_edit_into_file}\n'
+        text_to_send = text_to_send .. 'file: ' .. filepath .. '\n'
+        text_to_send = text_to_send .. user_input
       end
       -- Send to CodeCompanionChat
-      vim.cmd('CodeCompanionChat ' .. text_to_send)
+      vim.fn.setreg('a', text_to_send)
+      vim.cmd('execute "CodeCompanionChat " . @a')
     end)
   else
     vim.notify('No text selected or current line is empty.', vim.log.levels.INFO, { title = 'CodeCompanion' })
