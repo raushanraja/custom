@@ -98,4 +98,19 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.have_nerd_font = true
 
+-----------------------------------------------------------
+-- [[ Setting colorscheme and other commands ]]
+-----------------------------------------------------------
+local cmd = {
+  colorscheme = 'one_monokai',
+}
+-- Apply commands
+for command, value in pairs(cmd) do
+  -- Using pcall to safely set commands, as some might not be available immediately
+  pcall(vim.cmd.set, command .. '=' .. value)
+end
+-----------------------------------------------------------
+-- [[ end ]]
+-----------------------------------------------------------
+
 return M

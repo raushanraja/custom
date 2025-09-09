@@ -1,4 +1,3 @@
-vim.cmd.colorscheme 'one_monokai'
 return {
   'folke/tokyonight.nvim',
   'cpea2506/one_monokai.nvim',
