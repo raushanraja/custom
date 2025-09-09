@@ -31,3 +31,6 @@ require 'core.autocmds'
 require 'languages'
 require 'keymap'
 require 'plugins'
+
+-- Load additional option configurations
+require 'opts.ui.theme'

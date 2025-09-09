@@ -7,6 +7,7 @@ local M = {}
 require 'opts.ai.copilot'
 require 'opts.ai.codecompanion'
 require 'opts.core.mason'
+require 'opts.ui'
 
 -- Additional options can be set here
 -- Example:
