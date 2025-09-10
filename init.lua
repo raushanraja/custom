@@ -22,6 +22,9 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+--- Load the plugin manager and plugins
+require 'plugins'
+
 -- Load core configuration modules
 require 'core.options'
 require 'core.keymaps'
@@ -30,7 +33,6 @@ require 'core.autocmds'
 -- Load language-specific configurations
 require 'languages'
 require 'keymap'
-require 'plugins'
 
 -- Load additional option configurations
 require 'opts.ui.theme'

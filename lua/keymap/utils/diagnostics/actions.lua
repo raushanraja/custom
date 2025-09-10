@@ -39,4 +39,81 @@ End Function: copy_line_diagnostics_with_location
 ====================
 ]]
 
+--[[
+--==================
+Function: Search and Replace
+--==================
+]]
+
+function M.project_replace()
+  vim.ui.input({ prompt = 'Search for: ' }, function(search_term)
+    if not search_term or search_term == '' then
+      return
+    end
+
+    vim.ui.input({ prompt = 'Replace with: ' }, function(replace_term)
+      if not replace_term then
+        return
+      end
+
+      require('telescope.builtin').live_grep {
+        default_text = search_term,
+        attach_mappings = function(prompt_bufnr, map)
+          map('i', '<C-r>', function(bufnr)
+            local picker = require('telescope.actions.state').get_current_picker(bufnr)
+            local selected_entries = picker:get_multi_selection()
+
+            require('telescope.actions').close(bufnr)
+
+            if vim.tbl_isempty(selected_entries) then
+              print 'No files selected for replacement.'
+              return
+            end
+
+            local formatted_items = {}
+            for _, entry in ipairs(selected_entries) do
+              table.insert(formatted_items, {
+                filename = entry.filename,
+                lnum = entry.lnum,
+                col = entry.col,
+                text = entry.text
+              })
+            end
+
+            vim.fn.setqflist({}, 'r', {
+              title = 'Project Replace (Selected)',
+              items = formatted_items,
+            })
+
+            local escaped_search = vim.fn.escape(search_term, '/')
+            local escaped_replace = vim.fn.escape(replace_term, '/')
+
+            -- Run the replacement command
+            local cmd = string.format('cfdo %%s/%s/%s/g | update', escaped_search, escaped_replace)
+            print('Running command:', cmd)
+            print('Number of files in quickfix:', #vim.fn.getqflist())
+            
+            local success, err = pcall(vim.cmd, cmd)
+            if not success then
+              print('Error during replacement:', err)
+              return
+            end
+
+            -- Write all changed buffers to disk
+            vim.cmd 'wa'
+
+            print 'Replacement complete. All changes saved.'
+          end)
+          return true
+        end,
+      }
+    end)
+  end)
+end
+--[[
+==================
+End Function: Search and Replace
+--==================
+]]
+
 return M
