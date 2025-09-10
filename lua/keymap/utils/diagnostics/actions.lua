@@ -88,19 +88,48 @@ function M.project_replace()
             local escaped_search = vim.fn.escape(search_term, '/')
             local escaped_replace = vim.fn.escape(replace_term, '/')
 
-            -- Run the replacement command
-            local cmd = string.format('cfdo %%s/%s/%s/g | update', escaped_search, escaped_replace)
-            print('Running command:', cmd)
-            print('Number of files in quickfix:', #vim.fn.getqflist())
-            
-            local success, err = pcall(vim.cmd, cmd)
-            if not success then
-              print('Error during replacement:', err)
-              return
+            -- Group replacements by file and line numbers
+            local file_lines = {}
+            for _, entry in ipairs(selected_entries) do
+              if not file_lines[entry.filename] then
+                file_lines[entry.filename] = {}
+              end
+              table.insert(file_lines[entry.filename], entry.lnum)
             end
 
-            -- Write all changed buffers to disk
-            vim.cmd 'wa'
+            print('Running replacement on', #selected_entries, 'selected items...')
+            
+            -- Process each file
+            for filename, lines in pairs(file_lines) do
+              -- Sort line numbers in descending order to avoid line number shifts
+              table.sort(lines, function(a, b) return a > b end)
+              
+              -- Read file content
+              local lines_content = {}
+              local file = io.open(filename, 'r')
+              if file then
+                for line in file:lines() do
+                  table.insert(lines_content, line)
+                end
+                file:close()
+                
+                -- Replace only on selected lines
+                for _, line_num in ipairs(lines) do
+                  if lines_content[line_num] then
+                    lines_content[line_num] = lines_content[line_num]:gsub(search_term, replace_term)
+                  end
+                end
+                
+                -- Write back to file
+                file = io.open(filename, 'w')
+                if file then
+                  for _, line in ipairs(lines_content) do
+                    file:write(line .. '\n')
+                  end
+                  file:close()
+                end
+              end
+            end
 
             print 'Replacement complete. All changes saved.'
           end)
