@@ -61,10 +61,10 @@ keymap('t', '<C-k>', '<C-\\><C-N><C-w>k', opts)
 keymap('t', '<C-l>', '<C-\\><C-N><C-w>l', opts)
 
 -- Insert mode navigation
-keymap('i', '<C-h>', '<Left>', opts)
+-- keymap('i', '<C-h>', '<Left>', opts)  -- Conflicts with snippet navigation
+-- keymap('i', '<C-l>', '<Right>', opts)  -- Conflicts with snippet navigation
 keymap('i', '<C-j>', '<Down>', opts)
 keymap('i', '<C-k>', '<Up>', opts)
-keymap('i', '<C-l>', '<Right>', opts)
 
 -- Quick exit insert mode
 keymap('i', 'jk', '<ESC>', opts)

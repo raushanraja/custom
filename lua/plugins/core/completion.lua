@@ -19,14 +19,19 @@ return {
         end)(),
         dependencies = {
           -- `friendly-snippets` contains a variety of premade snippets.
-          --    See the README about individual language/framework/plugin snippets:
-          --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          -- See the README about individual language/framework/plugin snippets:
+          -- https://github.com/rafamadriz/friendly-snippets
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              -- Load custom snippets first
+              require('luasnip.loaders.from_lua').load { paths = { vim.fn.stdpath('config') .. '/lua/snippets' } }
+              -- Load snippet keymaps
+              require 'snippets.keymaps'
+              -- Then load friendly snippets
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
         },
         opts = {},
       },
