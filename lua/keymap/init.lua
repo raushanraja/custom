@@ -5,6 +5,7 @@ local M = {}
 
 -- Load core keymaps (navigation, basic operations)
 require 'keymap.core.buffer'
+require 'keymap.core.git'
 
 -- Load plugin-specific keymaps
 require 'keymap.dev.toggleterm'
@@ -15,6 +16,9 @@ require 'keymap.utils.diagnostics'
 
 -- Load language-specific keymaps
 require 'keymap.lang'
+
+-- Initialize git keymaps
+require('keymap.core.git').setup()
 
 -- keymaps can be added here
 -- Example:

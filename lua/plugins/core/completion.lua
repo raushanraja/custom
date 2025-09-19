@@ -25,7 +25,7 @@ return {
             'rafamadriz/friendly-snippets',
             config = function()
               -- Load custom snippets first
-              require('luasnip.loaders.from_lua').load { paths = { vim.fn.stdpath('config') .. '/lua/snippets' } }
+              require('luasnip.loaders.from_lua').load { paths = { vim.fn.stdpath 'config' .. '/lua/snippets' } }
               -- Load snippet keymaps
               require 'snippets.keymaps'
               -- Then load friendly snippets

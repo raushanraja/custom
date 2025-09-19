@@ -88,7 +88,7 @@ local function start_chat_with_selection_or_line()
       end
       -- Send to CodeCompanionChat
       vim.fn.setreg('a', text_to_send)
-      vim.cmd('execute "CodeCompanionChat " . @a')
+      vim.cmd 'execute "CodeCompanionChat " . @a'
     end)
   else
     vim.notify('No text selected or current line is empty.', vim.log.levels.INFO, { title = 'CodeCompanion' })

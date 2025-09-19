@@ -76,7 +76,7 @@ function M.project_replace()
                 filename = entry.filename,
                 lnum = entry.lnum,
                 col = entry.col,
-                text = entry.text
+                text = entry.text,
               })
             end
 
@@ -98,12 +98,14 @@ function M.project_replace()
             end
 
             print('Running replacement on', #selected_entries, 'selected items...')
-            
+
             -- Process each file
             for filename, lines in pairs(file_lines) do
               -- Sort line numbers in descending order to avoid line number shifts
-              table.sort(lines, function(a, b) return a > b end)
-              
+              table.sort(lines, function(a, b)
+                return a > b
+              end)
+
               -- Read file content
               local lines_content = {}
               local file = io.open(filename, 'r')
@@ -112,14 +114,14 @@ function M.project_replace()
                   table.insert(lines_content, line)
                 end
                 file:close()
-                
+
                 -- Replace only on selected lines
                 for _, line_num in ipairs(lines) do
                   if lines_content[line_num] then
                     lines_content[line_num] = lines_content[line_num]:gsub(search_term, replace_term)
                   end
                 end
-                
+
                 -- Write back to file
                 file = io.open(filename, 'w')
                 if file then

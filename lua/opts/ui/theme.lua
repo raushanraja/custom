@@ -2,7 +2,7 @@
 -- [[ Setting colorscheme and other commands ]]
 -----------------------------------------------------------
 local cmd = {
-  colorscheme = 'one_monokai',
+  colorscheme = 'bluloco',
 }
 -- Apply commands
 for command, value in pairs(cmd) do
