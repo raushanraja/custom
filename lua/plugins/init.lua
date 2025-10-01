@@ -39,7 +39,7 @@ local M = {
 }
 
 require('lazy').setup(M, {
-  checker = { enabled = true }, -- Automatically check for plugin updates
+  checker = { enabled = false }, -- Disable automatic plugin update checks
   performance = {
     rtp = {
       -- Disable some rtp plugins for performance
