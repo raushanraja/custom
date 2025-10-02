@@ -81,7 +81,29 @@ return {
           map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
           -- Find references for the word under your cursor.
-          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+          -- Falls back to project-wide text search if no LSP references found.
+          map('gr', function()
+            local word = vim.fn.expand('<cword>')
+            local params = vim.lsp.util.make_position_params()
+            vim.lsp.buf_request_all(0, 'textDocument/references', params, function(results)
+              local has_results = false
+              for _, result in pairs(results) do
+                if result.result and #result.result > 0 then
+                  has_results = true
+                  break
+                end
+              end
+              
+              if has_results then
+                require('telescope.builtin').lsp_references()
+              else
+                require('telescope.builtin').live_grep({
+                  default_text = '\\b' .. word .. '\\b',
+                  prompt_title = 'Find text (no LSP references found)',
+                })
+              end
+            end)
+          end, '[G]oto [R]eferences')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.

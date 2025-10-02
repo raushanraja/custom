@@ -61,7 +61,7 @@ function M.setup()
   end, opts)
 
   -- Reset operations (with confirmation)
-  vim.keymap.set('n', '<leader>gr', function()
+  vim.keymap.set('n', '<leader>ghr', function()
     vim.ui.input({ prompt = 'Reset hunk? [y/N]: ' }, function(input)
       if input and (input == 'y' or input == 'Y') then
         vim.cmd 'Gitsigns reset_hunk'
@@ -69,7 +69,7 @@ function M.setup()
     end)
   end, opts)
 
-  vim.keymap.set('n', '<leader>gR', function()
+  vim.keymap.set('n', '<leader>ghR', function()
     vim.ui.input({ prompt = 'Reset ALL changes in buffer? [y/N]: ' }, function(input)
       if input and (input == 'y' or input == 'Y') then
         vim.cmd 'Gitsigns reset_buffer'
