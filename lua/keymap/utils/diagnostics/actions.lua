@@ -147,4 +147,58 @@ End Function: Search and Replace
 --==================
 ]]
 
+--[[
+====================
+Function: lsp_references_with_fallback
+====================
+]]
+function M.lsp_references_with_fallback()
+  local word = vim.fn.expand '<cword>'
+  local params = vim.lsp.util.make_position_params()
+
+  -- Check if we have any active LSP clients that support references
+  local clients = vim.lsp.get_active_clients { bufnr = 0 }
+  local has_references_support = false
+
+  for _, client in ipairs(clients) do
+    if client.supports_method 'textDocument/references' then
+      has_references_support = true
+      break
+    end
+  end
+
+  if has_references_support then
+    -- Use LSP references with fallback
+    vim.lsp.buf_request_all(0, 'textDocument/references', params, function(results)
+      local has_results = false
+      for _, result in pairs(results) do
+        if result.result and #result.result > 0 then
+          has_results = true
+          break
+        end
+      end
+
+      if has_results then
+        require('telescope.builtin').lsp_references()
+      else
+        require('telescope.builtin').live_grep {
+          default_text = '\\b' .. word .. '\\b',
+          prompt_title = 'Find text (no LSP references found)',
+        }
+      end
+    end)
+  else
+    -- No LSP support, use text search directly
+    require('telescope.builtin').live_grep {
+      default_text = '\\b' .. word .. '\\b',
+      prompt_title = 'Find text (no LSP server active)',
+    }
+  end
+end
+--[[
+====================
+End Function: lsp_references_with_fallback
+====================
+]]
+
 return M

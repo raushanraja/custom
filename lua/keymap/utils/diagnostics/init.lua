@@ -13,3 +13,10 @@ vim.keymap.set('n', '<leader>sr', M.project_replace, {
   silent = true,
   desc = 'Project-wide Find & Replace',
 })
+
+-- Keymap for LSP references with fallback to text search
+vim.keymap.set('n', '<leader>rr', M.lsp_references_with_fallback, {
+  noremap = true,
+  silent = true,
+  desc = 'LSP References (with fallback)',
+})
